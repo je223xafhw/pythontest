@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}{{page_title}}{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="alert alert-info" role="alert">
+            Dies hier ist nur ein Test. Die Verbindung wird für jede Anfrage neu aufgebaut.
+        </div>
+        {% if log == 1 %}
+        <div class="alert alert-warning" role="alert">
+            Keine Verbindung, Nutzerdaten Tunnel falsch
+        </div>
+        {% elif log == 7%}
+        <div class="alert alert-warning" role="alert">
+           Keine Verbindung, Nutzerdaten Datenbank falsch
+        </div>
+        {% elif log == 2%}
+        <div class="alert alert-success" role="alert">
+           Verbindung erfolgreich
+        </div>
+       {% endif %}
+        
+        <h1 class="display-1">Verbindungstest</h1>
+
+        <form action="/" method="POST">
+            <div class="row">
+                <!-- COLUMN 1 OF THE LITTLE TABLE OF INPUTS -->
+                <div class="col-md">
+                    <h1 class="display-4">SSH Tunnel</h1>
+                    <div class="form-group row mb-2">
+                        <label for="tunnelHost" class="col-sm-2 col-form-label">Host</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="tunnelHost" placeholder="SSH Host" name="ssh_host" value="{{ssh_host}}">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="tunnelUser" class="col-sm-2 col-form-label">Tunnel User</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="tunnelUser" placeholder="SSH Username" name="ssh_username" value="{{ssh_username}}">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="tunnelPassword" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="tunnelPassword" placeholder="SSH Passwort" name="ssh_password" value="{{ssh_password}}">
+                        </div>
+                    </div>
+                </div>
+                <!-- COLUMN 2 OF THE LITTLE TABLE OF INPUTS -->
+                <div class="col-md">
+                    <h1 class="display-4">Datenbank</h1>
+                    <div class="form-group row mb-2">
+                        <label for="dbUser" class="col-sm-2 col-form-label">DB User</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="dbUser" placeholder="DB Username" name="database_username" value="{{database_username}}">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="dbPassword" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="dbPassword" placeholder="DB Passwort" name="database_password" value="{{database_password}}">
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+            <!-- BUTTON -->
+            <button type="submit" class="btn btn-primary">Verbindungstest</button>
+        </form>
+    </div>
+
+{% endblock %}

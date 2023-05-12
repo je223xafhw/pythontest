@@ -1,0 +1,135 @@
+body {
+  background-color: #607D8B;
+}
+
+.container {
+  position: relative;
+}
+
+.bd {
+  width: 15em;
+}
+
+.mainpagetop {
+  position: relative;
+  width: 100%;
+}
+
+.mainpagebottom {
+  position: relative;
+  width: 100%;
+}
+
+.imageframe {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 5em;
+  border: black;
+  border-style: solid;
+  width: 1200px;
+  height: 300px;
+}
+
+img {
+  margin: 0 auto;
+}
+
+.slidecontainer {
+  width: 75%;
+  float: right;
+  margin: 0 auto;
+  vertical-align: middle;
+}
+
+.slider {
+  -webkit-appearance: none;
+  height: 5px;
+  width: 100%;
+  border-radius: 2px;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #292b2c;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #292b2c;
+  cursor: pointer;
+}
+
+.allcams {
+  margin: 0 auto;
+}
+
+.allcams .top,
+.allcams .bottom {
+  height: 112px;
+  margin: 0;
+}
+
+.allcams .top button,
+.allcams .bottom button {
+  width: 200px;
+  height: 112px;
+  margin: 0;
+  line-height: 10em;
+  vertical-align: middle;
+  float: left;
+  text-align: center;
+  border-style: solid black;
+  border-width: 1px;
+  box-shadow: 0.3em 0.3em 0.5em #34515e;
+  text-decoration: none;
+  /* background-image: url('../images/end1.png'); */
+  border-color: aliceblue;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 100% 15%;
+
+}
+
+
+.camcontainer {
+  float: right;
+  background-color: #8eacbb;
+  width: 1066px;
+  height: 600px;
+  overflow: hidden;
+  background-image: url('../images/view1-2-38.png');
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.camcontainer a {
+  display: inline-block;
+  position: absolute;
+  padding: 0;
+  font-size: 0.5em;
+  height: 5px;
+  width: 5px;
+  background-color: black;
+}
+
+.chooseCam {
+  margin-bottom: 2em;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

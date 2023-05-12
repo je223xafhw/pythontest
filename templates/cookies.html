@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}{{page_title}}{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  {% if e %}
+          <meta http-equiv="Refresh" content="3; url='{{ url_for('cam_ovv')}}'" />
+         <div class="alert alert-danger" role="alert">
+          Error: {{e}}
+        </div>
+        {% else %}
+        <meta http-equiv="Refresh" content="0.5; url='{{ url_for('cam_ovv')}}'" />
+
+        <div class="alert alert-info" role="alert">
+          Daten gespeichert. Weiterleitung....
+        </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

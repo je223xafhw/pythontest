@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block title %}{{page_title}}{% endblock %}
+
+
+
+
+{% block content %}
+<div class="container">
+{% if log == 0 %}
+<div class="alert alert-secondary" role="alert">
+    CSV Details: {{size}} Zeilen | {{diffsec}} sekunden
+</div>
+{% elif log == 1 %}
+<div class="alert alert-warning" role="alert">
+    [{{log}}] Keine csv datei gefunden. Bitte zuerst erstellen.
+</div>
+{% elif log == 2%}
+<div class="alert alert-warning" role="alert">
+    [{{log}}] Dateneingabe falsch. 
+</div>
+{% elif log == 3%}
+<div class="alert alert-warning" role="alert">
+    [{{log}}] Daten überschreiten die csv Datei. Bitte zwischen {{date_limits[0]}} und {{date_limits[1]}} wählen 
+</div>
+{% elif log == 4%}
+<div class="alert alert-warning" role="alert">
+    [{{log}}] Irgendetwas stimmt mit der Datei nicht. <a href="{{ url_for('static', filename='csv/test.csv')}}" target="_blank">Hier</a> kannst du sie runterladen
+</div>
+{% endif %}
+
+<div class="allcams">
+    <div class="top">
+        {% for i in range(0,6) %}
+        <form action="/ind_cams" method="POST" target="_blank">
+            <button  type="submit" name="camButton" value="{{i+1}}" id="a_cam{{i+1}}">
+                <p style="line-height:10px;font-weight:bold;">Cam {{i+1}}</p>
+                {% if count %}
+                <p style="line-height:10px; color: #6e6e6e;">{{count[i]}}</p>
+                {% endif %}
+            </button>
+        </form>
+        {% endfor %}
+    </div>
+
+    <div class="bottom">
+        {% for i in range(6,12) %}
+        <form action="/ind_cams" method="POST" target="_blank">
+            <button  type="submit" name="camButton" value="{{i+1}}">
+                <p style="line-height:10px;font-weight:bold;">Cam {{i+1}}</p>
+                {% if count %}
+                <p style="line-height:10px; color: #6e6e6e;">{{count[i]}}</p>
+                {% endif %}
+            </button>
+        </form>
+        {% endfor %}
+    </div>
+</div>
+<br><br>
+
+<div class="row" style="clear:both;">
+    <!-- COLUMN 1 -->
+    <div class="col-sm-6">
+        <div class="imageInputForm">
+            <form action="/cookies" method="POST" class="form-inline">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="bd" placeholder="BackgroundImage.png" name="begindate" value=''>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary mb-2">set image</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- COLUMN 2 -->
+    
+    <div class="col-sm">
+            {% if log == 0 or log == 3%}
+            <div class="dateInputForm">
+                <form action="/cookies" method="POST" class="form-inline">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="bd" placeholder="BeginDate" name="begindate" value='{{start_date_form}}'>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="ed" placeholder="EndDate" name="enddate" value="{{end_date_form}}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary mb-2">set dates</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#SetupQuery">Set Up Query</button>
+    </div>
+
+    <!-- Modal -->
+    <form action="/cookies" method="POST" class="form-inline">
+            <div class="modal fade" id="SetupQuery" tabindex="-1" aria-labelledby="SetupQueryLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="SetupQueryLabel">CSV Datei</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="alert alert-warning" role="alert" id="downloadalert" style="display: none;">
+                            Download wird ausgeführt...
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-check-label" for="TimeStartIn">Zeit Start</label>
+                                    <input type="text" class="form-control" id="tsi" placeholder="TimeStartIn" name="TimeStartIn" value='{{date_from_form_start}}'>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-check-label" for="TimeEndIn">Zeit Ende</label>
+                                    <input type="text" class="form-control" id="tsi" placeholder="TimeEndIn" name="TimeEndIn" value="{{date_from_form_end}}">
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <label class="form-check-label" for="csvFileName">CSV Dateiname</label>
+                                    <input type="text" class="form-control" id="csvFileName" placeholder="Dateiname" name="csvFileName" value='test'>
+                                </div>
+                                <div class="col-4">
+                                    <input type="checkbox" class="form-check-input" id="gen" name="gen" onclick="enquery()">
+                                    <label class="form-check-label" for="gen">Download</label>
+                                </div>
+                            </div>
+                            <!-- in this row all the columns from the database are shown -->
+                            <div class="row  g-3" id="databasecolumns">
+                                <div class="col">
+                                    {% for SQLcolumn in sql_columns %}
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="SQL_{{SQLcolumn}}" name="SQL_{{SQLcolumn}}">
+                                        <label class="form-check-label" for="SQL_{{SQLcolumn}}">{{SQLcolumn}}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="fetchquerybutton">Speichern</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        
+    </form>
+
+    
+
+</div>
+
+<button id="a_cam">Clickme</button>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% if log == 0 %}
+    <span class="navbar-text">Data: {{start_date_cookie}} | {{start_date_cookie}} </span>
+    {% endif %}
+  {% endblock %}

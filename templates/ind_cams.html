@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}{{page_title}}{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        {% if log==1 %}
+        <div class="alert alert-warning" role="alert">
+            Keine Kameradaten. Bitte Cookies setzen oder vom Dropdown auswählen
+          </div>
+       {% endif %}
+
+       {% if log==10 %}
+        <form action="/ind_cams" method="POST" class="chooseCam">
+            <div class="row">
+                <div class="col-md-4">
+                    <select name="chosenCamID" class="form-control">
+                        {% for i in range(1,13) %}
+                        {% if i == index %}
+                        <option selected>{{i}}</option>
+                        {% else %}
+                        <option>{{i}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Cam</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        <form action="/video" method="POST" class="chooseVideo" target="_blank">
+            <button type="submit" class="btn btn-primary">Video</button>
+        </form>
+        <div class="camcontainer">
+            {{items}}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+
+    <span class="navbar-text" style="margin-right: 10px;">Cam {{index}}</span>
+    <span class="navbar-text">Data: {{begin_date}} | {{end_date}} | {{diffsec}}</span>
+    <div class="slidecontainer">
+        <input type="range" min="0" max="{{diffsec}}" value="0" class="slider bg-primary" id="myRange">
+    </div>
+  {% endblock %}
